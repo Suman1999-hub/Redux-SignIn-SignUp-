@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input } from "reactstrap";
 import { signUpData } from "../API-Call/http-call";
+import { useGoogleLogin } from "@react-oauth/google";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -35,6 +36,12 @@ function SignUp() {
     }
     console.log(formData);
   }
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onError: () => {
+      console.log("Login Failed");
+    },
+  });
   return (
     <div className="card-container">
       <div className="video-side">
@@ -121,6 +128,20 @@ function SignUp() {
           <Button size="lg" color="danger" onClick={() => signUpBtn()}>
             Sign Up
           </Button>
+
+          <div>
+            <img
+              src="../../google.png"
+              width="50px"
+              style={{ margin: "20px" }}
+              onClick={() => googleLogin()}
+            />
+            <img
+              src="../../facebook.png"
+              width="55px"
+              style={{ margin: "20px" }}
+            />
+          </div>
           <div className="sign-in-link">
             Already have an account?{" "}
             <Link to="/login">

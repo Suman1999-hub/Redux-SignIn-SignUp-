@@ -21,6 +21,9 @@ function EditProfile() {
     },
     phone: loginUserData.phone,
   });
+
+  const [newFIle, setNewFile] = useState("");
+
   const handleSaveBtn = async () => {
     try {
       const response = await updateUserData({
@@ -55,6 +58,20 @@ function EditProfile() {
     });
   };
 
+  //uploadFile
+  const submitImage = () => {
+    const data = new FormData();
+    data.append("file", newFIle);
+    data.append("upload_preset", "UploadFile");
+    data.append("cloud_name", "dqyjholm2");
+    fetch("https://api.cloudinary.com/v1_1/dqyjholm2/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  };
+
   const toggle = () => setModal(!modal);
   console.log(profileData);
   return (
@@ -83,7 +100,15 @@ function EditProfile() {
               style={{ borderRadius: "20px" }}
             />
             <div style={{ marginTop: "10px" }}>
-              <input type="file" className="choose" />
+              <input
+                type="file"
+                className="choose"
+                onChange={(e) => setNewFile(e.target.files[0])}
+              />
+
+              <Button color="danger" onClick={submitImage}>
+                Upload
+              </Button>
             </div>
           </div>
           <div>
